@@ -1,0 +1,46 @@
+==================================================
+Algorithm: Check if All Leaves Are at Same Level
+==================================================
+
+### Approach (Recursive)
+1. Initialize a global variable `leafLevel` to track the depth of the first encountered leaf.
+2. Traverse the tree while tracking the current depth:
+   - When a leaf node (no left/right children) is found:
+     - If `leafLevel` is unset (-1), record its depth.
+     - Else, compare with `leafLevel`. If different, return false.
+3. Recurse through left and right subtrees, incrementing depth by 1.
+4. Base Case: Empty tree or single-node tree automatically satisfies the condition.
+
+### Java Code
+```java
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int x) { val = x; }
+}
+
+class Solution {
+    private int leafLevel = -1; // Tracks first leaf's depth
+    
+    public boolean isSameLevel(TreeNode root) {
+        return checkLeafLevel(root, 0);
+    }
+    
+    private boolean checkLeafLevel(TreeNode node, int currentLevel) {
+        if (node == null) return true;
+        
+        // Leaf node check
+        if (node.left == null && node.right == null) {
+            if (leafLevel == -1) {
+                leafLevel = currentLevel; // Set first leaf depth
+            } else if (currentLevel != leafLevel) {
+                return false; // Mismatch found
+            }
+            return true;
+        }
+        
+        // Recurse left and right
+        return checkLeafLevel(node.left, currentLevel + 1) && 
+               checkLeafLevel(node.right, currentLevel + 1);
+    }
+}

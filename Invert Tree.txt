@@ -1,0 +1,41 @@
+==================================================
+Algorithm: Invert a Binary Tree (Recursive)
+==================================================
+
+### Approach (Recursive Post-Order Swap)
+1. **Base Case**: If the tree is empty (`null`), return `null`.
+2. **Swap Left and Right Subtrees**:
+   - Temporarily store the left subtree.
+   - Assign the right subtree to the left child.
+   - Assign the stored left subtree to the right child.
+3. **Recursively Invert**:
+   - Invert the left subtree.
+   - Invert the right subtree.
+4. **Return the Root**: The inverted tree.
+
+### Java Code
+```java
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int x) { val = x; }
+}
+
+class Solution {
+    public TreeNode invertTree(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+        
+        // Swap left and right subtrees
+        TreeNode temp = root.left;
+        root.left = root.right;
+        root.right = temp;
+        
+        // Recursively invert subtrees
+        invertTree(root.left);
+        invertTree(root.right);
+        
+        return root;
+    }
+}

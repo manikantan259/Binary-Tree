@@ -1,0 +1,33 @@
+--------------------------------------------------
+Algorithm: Create a Mirror Tree from a Binary Tree
+--------------------------------------------------
+
+### Approach (Recursive)
+1. Base Case: 
+   - If the input tree is empty (null), return null.
+2. Recursive Steps:
+   - Create a new node with the same value as the current root.
+   - Recursively mirror the right subtree and assign it to the left child of the new node.
+   - Recursively mirror the left subtree and assign it to the right child of the new node.
+3. Return the new mirrored tree.
+
+### Java Implementation
+```java
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int x) { val = x; }
+}
+
+public TreeNode mirrorTree(TreeNode root) {
+    if (root == null) {
+        return null;
+    }
+    
+    TreeNode mirroredRoot = new TreeNode(root.val);
+    mirroredRoot.left = mirrorTree(root.right);
+    mirroredRoot.right = mirrorTree(root.left);
+    
+    return mirroredRoot;
+}
