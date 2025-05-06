@@ -1,0 +1,84 @@
+class Node {
+    int data;
+    Node left, right;
+    Node(int data) {
+        this.data = data;
+        left = right = null;
+    }
+}
+
+class Solution {
+    // DFS helper function to find kth ancestor
+    private int findKthAncestorDFS(Node root, int target, int k, int[] result) {
+        // Base case: null node
+        if (root == null) {
+            return -1;
+        }
+        
+        // Base case: target node found
+        if (root.data == target) {
+            return 0; // Distance from target is 0
+        }
+        
+        // Recurse on left subtree
+        int leftDistance = findKthAncestorDFS(root.left, target, k, result);
+        if (leftDistance >= 0) {
+            // Target found in left subtree
+            if (leftDistance + 1 == k) {
+                result[0] = root.data; // Current node is kth ancestor
+            }
+            return leftDistance + 1; // Increment distance
+        }
+        
+        // Recurse on right subtree (only if left didn't find target)
+        int rightDistance = findKthAncestorDFS(root.right, target, k, result);
+        if (rightDistance >= 0) {
+            // Target found in right subtree
+            if (rightDistance + 1 == k) {
+                result[0] = root.data; // Current node is kth ancestor
+            }
+            return rightDistance + 1; // Increment distance
+        }
+        
+        // Target not found in either subtree
+        return -1;
+    }
+    
+    // Main function to find kth ancestor
+    public int kthAncestor(Node root, int k, int node) {
+        // Edge cases
+        if (root == null || k <= 0) {
+            return -1;
+        }
+        
+        // Initialize result array to store kth ancestor's value
+        int[] result = new int[1];
+        result[0] = -1; // Default: no ancestor found
+        
+        // Call DFS helper
+        findKthAncestorDFS(root, node, k, result);
+        
+        // Return kth ancestor's value or -1
+        return result[0];
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Construct the binary tree
+        Node root = new Node(1);
+        root.left = new Node(2);
+        root.right = new Node(3);
+        root.left.left = new Node(4);
+        root.left.right = new Node(5);
+        root.right.left = new Node(6);
+        root.right.right = new Node(7);
+        
+        // Test case
+        Solution solution = new Solution();
+        int node = 5; // Target node
+        int k = 2;   // Find 2nd ancestor
+        int result = solution.kthAncestor(root, k, node);
+        System.out.println("Kth ancestor of node " + node + " is: " + result); // Output: 1
+    }
+}

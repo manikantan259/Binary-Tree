@@ -1,0 +1,50 @@
+ALGORITHM: Check Balanced Binary Tree
+------------------------------------
+1. Base Case: 
+   - If node is null, return height = 0
+
+2. Recursively check left subtree:
+   - If left subtree returns -1 (unbalanced), propagate -1 up
+
+3. Recursively check right subtree:
+   - If right subtree returns -1 (unbalanced), propagate -1 up
+
+4. Check current node's balance:
+   - If |leftHeight - rightHeight| > 1 → return -1 (unbalanced)
+   - Else return actual height (max(left,right) + 1)
+
+5. Final Check:
+   - If root check returns -1 → tree is unbalanced
+   - Else → tree is balanced
+
+TIME COMPLEXITY: O(n) - visits each node once
+SPACE COMPLEXITY: O(h) - recursion stack height
+
+JAVA CODE:
+----------
+class Solution {
+    public boolean isBalanced(Node root) {
+        return checkHeight(root) != -1;
+    }
+    
+    private int checkHeight(Node root) {
+        if (root == null) return 0;
+        
+        int leftHeight = checkHeight(root.left);
+        if (leftHeight == -1) return -1;
+        
+        int rightHeight = checkHeight(root.right);
+        if (rightHeight == -1) return -1;
+        
+        if (Math.abs(leftHeight-rightHeight) > 1) return -1;
+        
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+}
+
+KEY NOTES:
+----------
+- Uses -1 as sentinel value for unbalanced trees
+- Combines height calculation and balance check in single pass
+- Early termination when any subtree is unbalanced
+- Works for all binary tree cases (empty, skewed, balanced)

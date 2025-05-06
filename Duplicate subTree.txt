@@ -1,0 +1,52 @@
+import java.util.*;
+
+class Node {
+    int data;
+    Node left, right;
+    Node(int data) {
+        this.data = data;
+        left = right = null;
+    }
+}
+
+class Solution {
+    // Instance variables to track subtrees and results
+    private HashMap<String, Integer> mp = new HashMap<>();
+    private List<Node> result = new ArrayList<>();
+    
+    public List<Node> printAllDups(Node root) {
+        // Clear instance variables for fresh state
+        mp.clear();
+        result.clear();
+        
+        // Serialize and process the tree
+        serialize(root);
+        
+        return result;
+    }
+    
+    private String serialize(Node root) {
+        // Base case: null node
+        if (root == null) {
+            return "#";
+        }
+        
+        // Post-order DFS: serialize left and right subtrees
+        String leftTree = serialize(root.left);
+        String rightTree = serialize(root.right);
+        
+        // Create serialization for current subtree
+        String serialize = root.data + "," + leftTree + "," + rightTree;
+        
+        // Update count in hash map
+        mp.put(serialize, mp.getOrDefault(serialize, 0) + 1);
+        
+        // If this is the second occurrence, add to result
+        if (mp.get(serialize) == 2) {
+            result.add(root);
+        }
+        
+        return serialize;
+    }
+}
+

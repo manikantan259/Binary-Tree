@@ -1,0 +1,22 @@
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int x) { val = x; }
+}
+
+class Solution {
+    public boolean isIsomorphic(TreeNode root1, TreeNode root2) {
+        // Both empty
+        if (root1 == null && root2 == null) return true;
+        // One empty
+        if (root1 == null || root2 == null) return false;
+        // Values differ (if values matter)
+        if (root1.val != root2.val) return false;
+
+        // Check without swap OR with swap
+        return (isIsomorphic(root1.left, root2.left) && 
+               (isIsomorphic(root1.right, root2.right)) ||
+               (isIsomorphic(root1.left, root2.right) && 
+               (isIsomorphic(root1.right, root2.left));
+    }
+}

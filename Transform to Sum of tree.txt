@@ -1,0 +1,39 @@
+==================================================
+Algorithm: Convert Binary Tree to Sum Tree
+==================================================
+
+### Approach (Recursive Post-Order Traversal)
+1. **Base Case**: 
+   - If node is `null`, return `0`.
+2. **Recursive Steps**:
+   - Store the node's original value.
+   - Recursively compute sums of left and right subtrees.
+   - Update the node's value to `leftSum + rightSum`.
+   - Return the sum of the original value and new value (for parent's calculation).
+3. **Result**:
+   - Every node's value is replaced by the sum of its subtrees.
+
+### Java Code
+```java
+class Node {
+    int data;
+    Node left, right;
+    Node(int item) { data = item; }
+}
+
+class Solution {
+    public void toSumTree(Node root) {
+        sumTreeHelper(root);
+    }
+    
+    private int sumTreeHelper(Node root) {
+        if (root == null) return 0;
+        
+        int originalValue = root.data; // Store original value
+        int leftSum = sumTreeHelper(root.left);  // Get left subtree sum
+        int rightSum = sumTreeHelper(root.right); // Get right subtree sum
+        
+        root.data = leftSum + rightSum; // Update current node's value
+        return originalValue + root.data; // Return sum for parent
+    }
+}
